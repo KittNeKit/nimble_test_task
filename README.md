@@ -29,7 +29,7 @@ file.
 Also enter you DB URL into alembic.ini sqlalchemy.url
 
 ```
-sqlalchemy.url = postgresql://YOUR_USERNAME:YOUR_PASSWORD@YOUR_HOST/postgres
+sqlalchemy.url = postgresql://YOUR_USERNAME:YOUR_PASSWORD@YOUR_HOST/DB_NAME
 ```
 4. Once you're in the desired directory, run the following command to create a virtual environment:
 ```bash
@@ -68,7 +68,14 @@ alembic upgrade head
 
 7. Access the website locally at http://localhost:8000.
 
-8. Run celery to update the database daily
+8. Run Redis for Celery, don`t forget ro download Docker
+
+```bash
+docker run -d -p 6379:6379 redis
+```
+9. Run celery to update the database daily
+
+
 ```bash
 celery -A tasks:app worker -l info
 ```
