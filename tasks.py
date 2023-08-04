@@ -7,22 +7,21 @@ from db import models
 from app.CRUD import get_contacts
 
 
-app = Celery('tasks', backend='redis://localhost', broker='redis://localhost')
+app = Celery("tasks", backend="redis://localhost", broker="redis://localhost")
 URL = "https://api.nimble.com/api/v1/contacts/"
 db = SessionLocal()
+
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     sender.add_periodic_task(
-        crontab(
-            minute="0", hour="0"
-        ), save_contacts.s(), name="update contacts")
+        crontab(minute="0", hour="0"), save_contacts.s(), name="update contacts"
+    )
 
 
 def scrape_contacts():
     data = requests.get(
-        URL,
-        headers={'Authorization': 'Bearer NxkA2RlXS3NiR8SKwRdDmroA992jgu'}
+        URL, headers={"Authorization": "Bearer NxkA2RlXS3NiR8SKwRdDmroA992jgu"}
     ).json()
     users = []
     for info in data["resources"]:
@@ -36,7 +35,7 @@ def scrape_contacts():
                 {
                     "first_name": info["fields"]["first name"][0]["value"],
                     "last_name": info["fields"]["last name"][0]["value"],
-                    "email": email
+                    "email": email,
                 }
             )
     return users
@@ -52,9 +51,11 @@ def save_contacts():
         )
         in_db = False
         for users in get_contacts(db):
-            if (users.first_name == db_contacts.first_name and
-                    users.last_name == db_contacts.last_name and
-                    users.email == db_contacts.email):
+            if (
+                users.first_name == db_contacts.first_name
+                and users.last_name == db_contacts.last_name
+                and users.email == db_contacts.email
+            ):
                 in_db = True
                 break
 
