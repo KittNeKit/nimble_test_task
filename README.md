@@ -24,8 +24,13 @@ git clone https://github.com/your-username/nimble_test_task
 cd nimble_test_task
 ```
 3. Сopy .env_sample file with your examples of env variables to your .env
-file
+file.
 
+Also enter you DB URL into alembic.ini sqlalchemy.url
+
+```
+sqlalchemy.url = postgresql://YOUR_USERNAME:YOUR_PASSWORD@YOUR_HOST/postgres
+```
 4. Once you're in the desired directory, run the following command to create a virtual environment:
 ```bash
 python -m venv venv
