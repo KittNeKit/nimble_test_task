@@ -9,5 +9,5 @@ class DBContacts(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(255))
     last_name = Column(String(255))
-    email = Column(String(255))
+    email = Column(String(255), nullable=True)
 
